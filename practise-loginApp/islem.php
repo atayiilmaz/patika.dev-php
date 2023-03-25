@@ -3,7 +3,15 @@ session_start();
 include 'helper.php';
 
 $user = [
-    'atayilmaz' => '123456'
+    'atayilmaz' => [
+        'eposta' => 'atayilmaz@gmail.com',
+        'password' => '123456'
+    ],
+
+    'irmak' => [
+        'eposta' => 'irmak@gmail.com',
+        'password' => 'yilmaz'
+    ]
 ];
 
 if(get('islem') == 'giris') {
@@ -19,8 +27,60 @@ if(get('islem') == 'giris') {
         $_SESSION['error'] = 'Lütfen şifrenizi giriniz';
         header('Location: login.php');
         exit();
+    } else {
+
+        if(array_key_exists(post('username'), $user)){
+            if($user[post('username')]['password'] == post('password')){
+
+                $_SESSION['login'] = true;
+                $_SESSION['kullanici_adi'] = post('username');
+                $_SESSION['eposta'] = $user[post('username')]['eposta'];
+
+                header('Location: index.php');
+
+            } else {
+                $_SESSION['error'] = 'Kayıtlı kullanıcı bulunamadı!';
+                header('Location: login.php');
+                exit();
+            }
+        } else {
+            $_SESSION['error'] = 'Kayıtlı kullanıcı bulunamadı!';
+            header('Location: login.php');
+            exit();
+        }
+
     }
 
 }
 
-?>
+if(get('islem') == 'hakkimda') {
+
+    $hakkimda = post('hakkimda');
+
+    $islem = file_put_contents('./db/'.session('kullanici_adi').'.txt', htmlspecialchars($hakkimda));
+
+    if ($islem){
+        header('Location: index.php?islem=true');
+    } else {
+        header('Location: index.php?islem=false');
+    }
+
+}
+
+if(get('islem') == 'logout') {
+
+    session_destroy();
+    session_start();
+    $_SESSION['error'] = 'Oturum sonlandırıldı!';
+    header('Location: login.php');
+}
+
+if (get('islem') == 'renk') {
+
+    setcookie('color', get('color'), time() + (86400 * 360));
+    if ($_SERVER['HTTP_REFERER']){
+        header('Location:'.$_SERVER['HTTP_REFERER']);
+    } else {
+        header('Location: index.php');
+    }
+}

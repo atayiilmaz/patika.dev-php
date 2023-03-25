@@ -1,7 +1,6 @@
 <?php
 include 'helper.php';
 session_start();
-
 ?>
 
 <!doctype html>
@@ -18,10 +17,10 @@ session_start();
         }
     </style>
 </head>
-<body class="bg-dark">
+<body class="<?= cookie('color') ?>">
 <div class="d-flex align-items-center justify-content-center p-4"><img height="" src="kodl.png" alt=""></div>
 <div  class="container d-flex align-items-center justify-content-center">
-    <div class="card bg-dark" style="width: 18rem;">
+    <div class="card <?= cookie('color') ?>" style="width: 18rem;">
         <div class="card-header bg-primary">
             Giriş Yap
         </div>
@@ -38,8 +37,8 @@ session_start();
             </form>
         </div>
         <div class="card-footer bg-info d-flex align-items-center justify-content-between">
-            <a href="change-color.php?color=bg-light" class="btn btn-sm btn-light">Light Mod</a>
-            <a href="change-color.php?color=bg-dark" class="btn btn-sm btn-dark">Dark Mod</a>
+            <a href="islem.php?islem=renk&color=bg-light" class="btn btn-sm btn-light">Light Mod</a>
+            <a href="islem.php?islem=renk&color=bg-dark" class="btn btn-sm btn-dark">Dark Mod</a>
         </div>
     </div>
 </div>
